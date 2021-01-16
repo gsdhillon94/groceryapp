@@ -4,5 +4,6 @@ django-cors-headers==3.6.0
 djangorestframework==3.12.2
 mysqlclient==2.0.2
 PyMySQL==0.10.1
+python-dotenv==0.15.0
 pytz==2020.4
 sqlparse==0.4.1
