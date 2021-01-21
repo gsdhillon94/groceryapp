@@ -1,11 +1,18 @@
 import base64
 from django.core.validators import RegexValidator
 from django.db import models
+import os
 
 # Create your models here.
+from django.dispatch import receiver
+
 phone_regex = RegexValidator(regex=r'/^(?:\(?(?:\+?61|0)4\)?(?:[ -]?[0-9]){7}[0-9]$)/',
                              message="Phone number must be entered in the format: '+61999999999'. Up to 11 digits allowed.")
 
+def _delete_file(path):
+   """ Deletes file from filesystem. """
+   if os.path.isfile(path):
+       os.remove(path)
 
 class Customer(models.Model):
     name = models.CharField(max_length=60, null=False)
@@ -20,30 +27,26 @@ class Customer(models.Model):
 
 class Brand(models.Model):
     name = models.CharField(max_length=60, null=False)
-    logo = models.TextField(blank=False)
+    logo = models.ImageField(upload_to='brand_logos/')
     description = models.TextField(blank=False)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
 
-    def set_logo(self, logo):
-        self.logo = base64.encodebytes(logo)
-
-    def get_logo(self):
-        return base64.decodebytes(self.logo)
 
 class Category(models.Model):
     name = models.CharField(max_length=60, null=False)
     type = models.CharField(max_length=60, null=False, default='Grocery' )
     sub_type = models.CharField(max_length=60, null=False,default='-')
+    category_logo = models.ImageField(upload_to='category_logos/', default='../../brand_logos/Amul.png')
 
     def __str__(self):
-        return self.name
+        return self.sub_type
 
 class Product(models.Model):
     name = models.CharField(max_length=60, null=False)
-    image = models.TextField(blank=False)
+    image = models.ImageField(upload_to='product_images/')
     category = models.ForeignKey('Category', on_delete=models.CASCADE)
     description = models.TextField(blank=False)
     brand = models.ForeignKey('Brand', on_delete=models.CASCADE)
@@ -51,11 +54,6 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
-    def set_image(self, image):
-        self.logo = base64.encodebytes(image)
-
-    def get_image(self):
-        return base64.decodebytes(self.image)
 
 class Product_details(models.Model):
     GRAMS = 'grams'
@@ -67,7 +65,7 @@ class Product_details(models.Model):
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return str(self.product)
+        return str(self.product) + " : "+ str(self.unit_weight)+" "+str(self.unit)
 
 class Order(models.Model):
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -102,7 +100,10 @@ class Address(models.Model):
         return self.address_line_1
 
 class Cart(models.Model):
-    product_id = models.ForeignKey('Product_details', on_delete=models.CASCADE)
+    product_details_id = models.ForeignKey('Product_details', on_delete=models.CASCADE)
     units_purchased = models.PositiveIntegerField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
     customer_id = models.ForeignKey('Customer', on_delete=models.CASCADE)
+
+class Updates(models.Model):
+    update_image = models.ImageField(upload_to='update_images/')
+    description = models.TextField(blank=False)

@@ -20,5 +20,14 @@ class BrandViewSet(viewsets.ModelViewSet):
     queryset = Brand.objects.all().order_by('name')
     serializer_class = BrandSerializer
 
-class HomeScreenProducts(APIView):
-    pass
+class CartViewSet(viewsets.ModelViewSet):
+    queryset = Cart.objects.all()
+    serializer_class = CartSerializer
+
+class CustomerViewSet(viewsets.ModelViewSet):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
+
+class UpdatesViewSet(viewsets.ModelViewSet):
+    queryset = Updates.objects.all()
+    serializer_class = UpdatesSerializer

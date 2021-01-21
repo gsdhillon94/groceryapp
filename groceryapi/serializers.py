@@ -4,7 +4,7 @@ from .models import *
 class CustomerSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Customer
-        fields = ('__all__')
+        fields = ('id','name','phone_number','email')
 
 class BrandSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,7 +14,7 @@ class BrandSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ('name','type','sub_type')
+        fields = ('id','name','type','sub_type','category_logo')
 
 class Product_detailsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -49,4 +49,9 @@ class AddressSerializer(serializers.HyperlinkedModelSerializer):
 class CartSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Cart
-        fields = ('__all__')
+        fields = ('id','product_details_id','units_purchased','customer_id')
+
+class UpdatesSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Updates
+        fields = ('id','update_image','description')
