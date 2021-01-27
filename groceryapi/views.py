@@ -31,3 +31,7 @@ class CustomerViewSet(viewsets.ModelViewSet):
 class UpdatesViewSet(viewsets.ModelViewSet):
     queryset = Updates.objects.all()
     serializer_class = UpdatesSerializer
+
+class CustomerCartViewset(viewsets.ModelViewSet):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerCartSerializer

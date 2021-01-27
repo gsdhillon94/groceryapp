@@ -100,9 +100,9 @@ class Address(models.Model):
         return self.address_line_1
 
 class Cart(models.Model):
-    product_details_id = models.ForeignKey('Product_details', on_delete=models.CASCADE)
+    product_details_id = models.ForeignKey('Product_details',related_name='prod_details', on_delete=models.CASCADE)
     units_purchased = models.PositiveIntegerField()
-    customer_id = models.ForeignKey('Customer', on_delete=models.CASCADE)
+    customer_id = models.ForeignKey('Customer',related_name='cart_details', on_delete=models.CASCADE)
 
 class Updates(models.Model):
     update_image = models.ImageField(upload_to='update_images/')

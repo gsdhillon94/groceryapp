@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from .models import *
-class CustomerSerializer(serializers.HyperlinkedModelSerializer):
+class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
         fields = ('id','name','phone_number','email')
@@ -19,7 +19,7 @@ class CategorySerializer(serializers.ModelSerializer):
 class Product_detailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product_details
-        fields = ['units_in_stock','unit','unit_weight','unit_price']
+        fields = ['id','units_in_stock','unit','unit_weight','unit_price']
 
 class ProductSerializer(serializers.ModelSerializer):
     prod_details = Product_detailsSerializer(many=True, read_only=True)
@@ -46,12 +46,19 @@ class AddressSerializer(serializers.HyperlinkedModelSerializer):
         model = Address
         fields = ('__all__')
 
-class CartSerializer(serializers.HyperlinkedModelSerializer):
+class CartSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cart
-        fields = ('id','product_details_id','units_purchased','customer_id')
+        fields = ['product_details_id','units_purchased','customer_id']
+
 
 class UpdatesSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Updates
         fields = ('id','update_image','description')
+
+class CustomerCartSerializer(serializers.ModelSerializer):
+    cart_details = CartSerializer(many=True)
+    class Meta:
+        model = Customer
+        fields = ['id','cart_details','name']
