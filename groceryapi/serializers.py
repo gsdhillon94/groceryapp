@@ -11,23 +11,29 @@ class BrandSerializer(serializers.ModelSerializer):
         model = Brand
         fields = ('id','name','logo','description','is_active')
 
-class CategorySerializer(serializers.ModelSerializer):
+class MainCategorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Category
-        fields = ('id','name','type','sub_type','category_logo')
+        model = Main_category
+        fields = ('id','name','category_logo')
 
 class Product_detailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product_details
         fields = ['id','units_in_stock','unit','unit_weight','unit_price']
 
+class SubCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Sub_category
+        fields = ['id','name','main_category','category_logo']
+
 class ProductSerializer(serializers.ModelSerializer):
     prod_details = Product_detailsSerializer(many=True, read_only=True)
     brand = BrandSerializer()
-    category = CategorySerializer()
+    sub_category = SubCategorySerializer()
+    main_category = MainCategorySerializer()
     class Meta:
         model = Product
-        fields = ['id','name','image','brand','category','prod_details']
+        fields = ['id','name','image','brand','sub_category','main_category','prod_details']
 
 
 

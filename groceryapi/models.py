@@ -35,19 +35,26 @@ class Brand(models.Model):
         return self.name
 
 
-class Category(models.Model):
+class Main_category(models.Model):
     name = models.CharField(max_length=60, null=False)
-    type = models.CharField(max_length=60, null=False, default='Grocery' )
-    sub_type = models.CharField(max_length=60, null=False,default='-')
-    category_logo = models.ImageField(upload_to='category_logos/', default='../../brand_logos/Amul.png')
+    category_logo = models.ImageField(upload_to='category_logos/', default='../../category_logos/Amul.png')
 
     def __str__(self):
-        return self.sub_type
+        return self.name
+
+class Sub_category(models.Model):
+    name = models.CharField(max_length=60, null=False)
+    category_logo = models.ImageField(upload_to='sub_category_logos/', default='../../sub_cat_logos/Amul.png')
+    main_category = models.ForeignKey('Main_category', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
 
 class Product(models.Model):
     name = models.CharField(max_length=60, null=False)
     image = models.ImageField(upload_to='product_images/')
-    category = models.ForeignKey('Category', on_delete=models.CASCADE)
+    sub_category = models.ForeignKey('Sub_category', on_delete=models.CASCADE)
+    main_category = models.ForeignKey('Main_category', on_delete=models.CASCADE)
     description = models.TextField(blank=False)
     brand = models.ForeignKey('Brand', on_delete=models.CASCADE)
 

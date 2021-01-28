@@ -6,7 +6,7 @@ services :
     ports:
       - '3306:3306'
     environment:
-      MYSQL_DATABASE: 'groceryapp'
+      MYSQL_DATABASE: 'groceryapp_db'
       MYSQL_USER: 'root'
       MYSQL_PASSWORD: 'aaeBae2020~'
       MYSQL_ROOT_PASSWORD: 'aaeBae2020~'

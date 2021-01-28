@@ -12,9 +12,9 @@ class Product_detailsViewSet(viewsets.ModelViewSet):
     queryset = Product_details.objects.all().order_by('product')
     serializer_class = Product_detailsSerializer
 
-class CategoryViewSet(viewsets.ModelViewSet):
-    queryset = Category.objects.all().order_by('name')
-    serializer_class = CategorySerializer
+class MainCategoryViewSet(viewsets.ModelViewSet):
+    queryset = Main_category.objects.all().order_by('name')
+    serializer_class = MainCategorySerializer
 
 class BrandViewSet(viewsets.ModelViewSet):
     queryset = Brand.objects.all().order_by('name')
@@ -35,3 +35,7 @@ class UpdatesViewSet(viewsets.ModelViewSet):
 class CustomerCartViewset(viewsets.ModelViewSet):
     queryset = Customer.objects.all()
     serializer_class = CustomerCartSerializer
+
+class SubCategoryViewset(viewsets.ModelViewSet):
+    queryset = Sub_category.objects.all()
+    serializer_class = SubCategorySerializer
