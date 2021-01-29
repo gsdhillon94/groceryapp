@@ -1,39 +1,35 @@
 from rest_framework import serializers
 
 from .models import *
-class CustomerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Customer
-        fields = ('id','name','phone_number','email')
 
 class BrandSerializer(serializers.ModelSerializer):
     class Meta:
         model = Brand
         fields = ('id','name','logo','description','is_active')
 
+class SubCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Sub_category
+        fields = ['id','name','category_logo']
+
 class MainCategorySerializer(serializers.ModelSerializer):
+    sub_category = SubCategorySerializer(many=True)
     class Meta:
         model = Main_category
-        fields = ('id','name','category_logo')
+        fields = ['id','name','category_logo','sub_category']
 
 class Product_detailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product_details
         fields = ['id','units_in_stock','unit','unit_weight','unit_price']
 
-class SubCategorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Sub_category
-        fields = ['id','name','main_category','category_logo']
 
 class ProductSerializer(serializers.ModelSerializer):
     prod_details = Product_detailsSerializer(many=True, read_only=True)
     brand = BrandSerializer()
-    sub_category = SubCategorySerializer()
-    main_category = MainCategorySerializer()
     class Meta:
         model = Product
-        fields = ['id','name','image','brand','sub_category','main_category','prod_details']
+        fields = ['id','name','image','brand','prod_details']
 
 
 
@@ -67,4 +63,10 @@ class CustomerCartSerializer(serializers.ModelSerializer):
     cart_details = CartSerializer(many=True)
     class Meta:
         model = Customer
-        fields = ['id','cart_details','name']
+        fields = ['id','name','cart_details',]
+
+class SubCategoryProductSerializer(serializers.ModelSerializer):
+    category_products = ProductSerializer(many=True)
+    class Meta:
+        model = Sub_category
+        fields = ['id','name','category_logo','category_products']

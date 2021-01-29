@@ -3,16 +3,10 @@ from rest_framework import routers
 from . import views
 
 router = routers.DefaultRouter()
-router.register(r'products', views.ProductViewSet)
-router.register(r'brands', views.BrandViewSet)
-router.register(r'main-categories', views.MainCategoryViewSet)
-router.register(r'sub-categories', views.SubCategoryViewset)
-router.register(r'product-details', views.Product_detailsViewSet)
-router.register(r'cart',views.CartViewSet)
-router.register(r'customer-cart',views.CustomerCartViewset, basename='customer-cart')
-router.register(r'customer',views.CustomerViewSet, basename='customer')
-router.register(r'updates',views.UpdatesViewSet)
-
+router.register(r'main-categories', views.MainCategoryViewSet, basename="all_main_categories")
+router.register(r'category-products', views.SubCategoryProductViewset, basename="all_products")
+router.register(r'customer-cart', views.CustomerCartViewset, basename="customer-cart")
+router.register(r'cart', views.CartViewset, basename="cart")
 
 urlpatterns = [
     path('',include(router.urls)),
